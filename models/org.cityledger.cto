@@ -17,3 +17,64 @@
  */
 
 namespace org.cityledger
+
+// CONCEPTS
+
+concept PropositionDetails {
+  o String title
+  o Integer price
+}
+
+
+// ASSET DEFINITIONS
+
+enum PropositionStatus {
+  o PLACED
+  o DELIVERED
+  o ACCEPTED
+  o DENIED
+ }
+
+asset Proposition identified by propId {
+  o String propId
+  o PropositionDetails propDetails
+  o PropositionStatus propStatus
+  --> Business owner
+}
+
+
+// PARTICIPANT DEFINITIONS
+
+participant Business identified by businessId {
+  o String businessId
+  o String businessName
+}
+
+participant MultipassUser identified by userId {
+  o String userId
+  o Proposition[] props optional
+}
+
+
+// TRANSACTION DEFINITIONS
+
+transaction PlaceProposition {
+  o PropositionDetails propDetails
+  --> Business orderer
+}
+
+event PlacePropositionEvent {
+  o PropositionDetails propDetails
+  --> Business orderer
+}
+
+transaction DeliverProposition {
+  --> Proposition prop
+  --> MultipassUser multipassOwner 
+}
+
+transaction UpdateProposition {
+  o  PropositionStatus propStatus
+  --> Proposition prop
+  --> MultipassUser multipassOwner
+}
