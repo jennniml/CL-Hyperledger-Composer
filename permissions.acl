@@ -12,6 +12,38 @@
  * limitations under the License.
  */
 
+
+ /**
+ * Simple access control list.
+ */
+rule EverybodyCanReadEverything {
+    description: "Allow all participants read access to all resources"
+    participant: "org.cityledger.Business"
+    operation: READ
+    resource: "org.cityledger.*"
+    action: ALLOW
+}
+
+rule EverybodyCanSubmitTransactions {
+    description: "Allow all business participants to submit pro"
+    participant: "org.cityledger.Business"
+    operation: CREATE
+    resource: "org.cityledger.PlaceProposition"
+    action: ALLOW
+}
+
+rule OwnerHasFullAccessToTheirAssets {
+    description: "Allow all participants full access to their assets"
+    participant(p): "org.cityledger.Business"
+    operation: ALL
+    resource(r): "org.cityledger.Proposition"
+    condition: (r.owner.getIdentifier() === p.getIdentifier())
+    action: ALLOW
+}
+
+
+
+
 rule NetworkAdminUser {
     description: "Grant business network administrators full access to user resources"
     participant: "org.hyperledger.composer.system.NetworkAdmin"
