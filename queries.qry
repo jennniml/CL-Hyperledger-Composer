@@ -1,0 +1,9 @@
+/**
+ * New query file
+ */
+
+query selectAllPropositions {
+  description: "Select all Propositions"
+  statement:
+      SELECT org.cityledger.Proposition
+}
